@@ -59,7 +59,7 @@ class DB_Map():
             coordinates = cursor.fetchone()
             return coordinates  # Mengembalikan koordinat kota
 
-    def create_graph(self, path, cities):
+    def create_graph(self, path, cities, color="red"):
         fig = plt.figure(figsize=(10, 5))
         ax = plt.axes(projection=ccrs.PlateCarree())
         ax.stock_img()
@@ -69,11 +69,17 @@ class DB_Map():
             coords = self.get_coordinates(city)
             if coords:
                 lat, lng = coords
-                ax.plot(lng, lat, marker='o', color='red', transform=ccrs.Geodetic())
+                ax.plot(
+                    lng, lat,
+                    marker='o',
+                    color=color,
+                    transform=ccrs.Geodetic()
+            )
                 ax.text(lng + 1, lat + 1, city, transform=ccrs.Geodetic())
 
         plt.savefig(path)
         plt.close()
+
 
     def draw_distance(self, city1, city2):
         coord1 = self.get_coordinates(city1)
